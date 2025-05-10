@@ -60,7 +60,7 @@ sdb                                             2 TB
 18. Install Fedora to sda6
 19. Boot into Fedora
 20. Open terminal
-21. Run `blkid` to find the UUID for sdb1
+21. Run `sudo blkid` to find the UUID for sdb1
 22. Run `sudo nano /etc/fstab` and add a line `UUID={uuid}  /data  ext4  defaults,auto  0  2` where `{uuid}` is the UUID for `sdb1`
 23. Run `lsblk` to check that partitionals are correctly configured
 24. Run `swapon --show` to check that swap is correctly configured to use sda5
@@ -70,7 +70,7 @@ sdb                                             2 TB
 ## Software
 
 ```sh
-dnf install git
+sudo dnf install git
 ```
 
 ### Terminal - Ghostty
@@ -78,8 +78,8 @@ dnf install git
 https://ghostty.org/docs/install/binary#linux-(official)
 
 ```sh
-dnf copr enable pgdev/ghostty
-dnf install ghostty
+sudo dnf copr enable pgdev/ghostty
+sudo dnf install ghostty
 ```
 
 ### Shell setup - zsh + ohmyzsh + p10k
@@ -89,8 +89,8 @@ dnf install ghostty
 https://github.com/ohmyzsh/ohmyzsh/wiki/Installing-ZSH
 
 ```sh
-dnf install zsh
-chsh -s /bin/zsh
+sudo dnf install zsh
+sudo chsh -s /bin/zsh
 ```
 
 #### Ohmyzsh
@@ -122,7 +122,7 @@ restart `zsh`
 
 https://github.com/ryanoasis/nerd-fonts/tree/master/patched-fonts/Meslo
 
-preferred: MesloLGS NF
+Preferred font for terminals: MesloLGS NF
 
 ```sh
 git clone --depth 1 https://github.com/ryanoasis/nerd-fonts.git ~/nerd-fonts
@@ -137,6 +137,8 @@ git sparse-checkout add patched-fonts/Meslo
 
 https://github.com/JetBrains/JetBrainsMono
 
+Preferred font for code editors: JetBrains Mono
+
 ```sh
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/JetBrains/JetBrainsMono/master/install_manual.sh)"
 ```
@@ -147,41 +149,65 @@ https://code.visualstudio.com/docs/setup/linux#_rhel-fedora-and-centos-based-dis
 
 ### Steam
 
-> ![WARN]
-> TODO
+https://docs.fedoraproject.org/en-US/gaming/proton/#_using_the_terminal
+
+```sh
+sudo dnf install https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm https://mirrors.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm -y
+sudo dnf config-manager setopt fedora-cisco-openh264.enabled=1
+sudo dnf install steam -y
+```
+
+If first launch fails, try launching from terminal with this env var set (https://www.reddit.com/r/Fedora/comments/1k0f36m/steam_launch_problem/)
+
+```sh
+__GL_CONSTANT_FRAME_RATE_HINT=3 steam
+```
+
+Be sure to enable Proton - https://docs.fedoraproject.org/en-US/gaming/proton/#_enable_proton_engine
 
 ### Discord
 
-> ![WARN]
-> TODO
+```sh
+sudo dnf install discord
+```
 
 ## Hardware
 
 ### CPU
 
-> ![WARN]
-> TODO
-
 Intel i5-11400F
 
 ### GPU
 
-> ![WARN]
-> TODO
+Nvidia RTX 5070 12GB
 
-Nvidia GeForce GTX 1060 6GB
+https://rpmfusion.org/Howto/NVIDIA#InstallingTheDrivers
+
+```sh
+sudo dnf install -y https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm https://mirrors.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm
+sudo dnf install akmod-nvidia
+sudo dnf install xorg-x11-drv-nvidia-cuda
+```
+
+Wait until the following command returns a driver version number before continuing.
+
+```sh
+modinfo -F version nvidia
+```
+
+https://rpmfusion.org/Howto/NVIDIA#KernelOpen
+
+RTX 5070 requires new NVIDIA open source driver.
+
+```sh
+sudo sh -c 'echo "%_with_kmod_nvidia_open 1" > /etc/rpm/macros.nvidia-kmod'
+sudo akmods --kernels $(uname -r) --rebuild
+reboot
+```
 
 ### Audio
 
-> ![WARN]
+> [!WARN]
 > TODO
 
 Vocaster Two mixer
-
-### Input
-
-> ![WARN]
-> TODO
-
-- Razer Deathadder mouse
-- Logitech G815 keyboard
