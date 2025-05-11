@@ -67,6 +67,40 @@ sdb                                             2 TB
 25. [Optional] Boot into other linux install/live media
 26. [Optional] Install other linux distro to sda7
 
+## Hardware
+
+### CPU
+
+Intel i5-11400F
+
+### GPU
+
+Nvidia RTX 5070 12GB
+
+https://rpmfusion.org/Howto/NVIDIA#InstallingTheDrivers
+
+```sh
+sudo dnf install -y https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm https://mirrors.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm
+sudo dnf install akmod-nvidia
+sudo dnf install xorg-x11-drv-nvidia-cuda
+```
+
+Wait until the following command returns a driver version number before continuing.
+
+```sh
+modinfo -F version nvidia
+```
+
+https://rpmfusion.org/Howto/NVIDIA#KernelOpen
+
+RTX 5070 requires new NVIDIA open source driver.
+
+```sh
+sudo sh -c 'echo "%_with_kmod_nvidia_open 1" > /etc/rpm/macros.nvidia-kmod'
+sudo akmods --kernels $(uname -r) --rebuild
+reboot
+```
+
 ## Software
 
 ```sh
@@ -169,38 +203,4 @@ Be sure to enable Proton - https://docs.fedoraproject.org/en-US/gaming/proton/#_
 
 ```sh
 sudo dnf install discord
-```
-
-## Hardware
-
-### CPU
-
-Intel i5-11400F
-
-### GPU
-
-Nvidia RTX 5070 12GB
-
-https://rpmfusion.org/Howto/NVIDIA#InstallingTheDrivers
-
-```sh
-sudo dnf install -y https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-$(rpm -E %fedora).noarch.rpm https://mirrors.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-$(rpm -E %fedora).noarch.rpm
-sudo dnf install akmod-nvidia
-sudo dnf install xorg-x11-drv-nvidia-cuda
-```
-
-Wait until the following command returns a driver version number before continuing.
-
-```sh
-modinfo -F version nvidia
-```
-
-https://rpmfusion.org/Howto/NVIDIA#KernelOpen
-
-RTX 5070 requires new NVIDIA open source driver.
-
-```sh
-sudo sh -c 'echo "%_with_kmod_nvidia_open 1" > /etc/rpm/macros.nvidia-kmod'
-sudo akmods --kernels $(uname -r) --rebuild
-reboot
 ```
