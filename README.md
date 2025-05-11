@@ -204,10 +204,3 @@ sudo sh -c 'echo "%_with_kmod_nvidia_open 1" > /etc/rpm/macros.nvidia-kmod'
 sudo akmods --kernels $(uname -r) --rebuild
 reboot
 ```
-
-### Audio
-
-> [!WARN]
-> TODO
-
-Vocaster Two mixer
