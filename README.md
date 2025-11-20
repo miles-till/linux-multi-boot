@@ -101,6 +101,25 @@ sudo akmods --kernels $(uname -r) --rebuild
 reboot
 ```
 
+### Mouse (Razer Viper V3 Pro)
+
+https://github.com/openrazer/openrazer/wiki/Secure-Boot#fedora-38
+
+https://openrazer.github.io/#download
+
+```sh
+sudo dnf install kernel-devel
+sudo dnf config-manager addrepo --from-repofile=https://openrazer.github.io/hardware:razer.repo
+sudo dnf install openrazer-meta
+```
+
+https://polychromatic.app/download/fedora/
+
+```sh
+sudo dnf config-manager addrepo --from-repofile=https://openrazer.github.io/hardware:razer.repo
+sudo dnf install polychromatic
+```
+
 ## Software
 
 ```sh
